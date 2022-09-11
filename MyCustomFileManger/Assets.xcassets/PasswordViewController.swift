@@ -31,10 +31,12 @@ class PasswordViewController: UIViewController {
         if changePassword {
             updatePassword()
         } else {
-            if let _ = setButton() {
-                checkPassword()
-            } else {
-                addPassword()
+            if let bool = setButton() {
+                if bool {
+                    checkPassword()
+                } else {
+                    addPassword()
+                }
             }
         }
     }
