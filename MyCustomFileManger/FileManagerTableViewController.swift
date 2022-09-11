@@ -9,16 +9,23 @@ import UIKit
 
 final class FileManagerTableViewController: UITableViewController {
     
-    private lazy var url: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    var isLogin: Bool = true
     
-    private var files: [URL] {
-        do {
-            let files = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-            return files
-        } catch {
-            print(error.localizedDescription)
-            return []
+    var isShowSizeImage: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: "isShowSizeImage")
         }
+        set {
+            UserDefaults.standard.set(true, forKey: "isShowSizeImage")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    var model = Model()
+        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     private lazy var imageNumber:Int = 0
@@ -26,6 +33,10 @@ final class FileManagerTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        showPasswordVC()
+        if let tab = tabBarController?.viewControllers?[1] {
+            (tab as? SettingsTableViewController)?.delegate = self
+        }
     }
     
     @IBAction func createFile(_ sender: Any) {
@@ -38,13 +49,8 @@ final class FileManagerTableViewController: UITableViewController {
         }
         let alertAction = UIAlertAction(title: "OK", style: .default) { action in
             guard let name = alertVC.textFields?[0].text, name != "",
-                    let content = alertVC.textFields?[1].text, content != "" else { return }
-            let path = self.url.appendingPathComponent(name).path
-            do {
-                try NSString(string: content).write(toFile: path, atomically: true, encoding: String.Encoding.utf8.rawValue)
-            } catch {
-                print(error.localizedDescription)
-            }
+                  let content = alertVC.textFields?[1].text, content != "" else { return }
+            self.model.createFile(name: name, content: content)
             self.tableView.reloadData()
         }
         alertVC.addAction(alertAction)
@@ -58,12 +64,7 @@ final class FileManagerTableViewController: UITableViewController {
         }
         let okAction = UIAlertAction(title: "OK", style: .default) { action in
             guard let text = alertVC.textFields?[0].text, text != "" else { return }
-            let newUrl = self.url.appendingPathComponent(text)
-            do {
-                try FileManager.default.createDirectory(at: newUrl, withIntermediateDirectories: false)
-            } catch {
-                print(error.localizedDescription)
-            }
+            self.model.createFolder(text: text)
             self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
@@ -80,17 +81,25 @@ final class FileManagerTableViewController: UITableViewController {
         present(imagePicker, animated: true)
     }
     
+    private func showPasswordVC() {
+        if isLogin {
+            guard let vc = storyboard?.instantiateViewController(withIdentifier: "PasswordViewController") else { return }
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return files.count
+        return model.files.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
-        let item = files[indexPath.row]
+        let item = model.files[indexPath.row]
         cell.textLabel?.text = item.lastPathComponent
         
         var isFolder: ObjCBool = false
@@ -98,20 +107,32 @@ final class FileManagerTableViewController: UITableViewController {
         if isFolder.boolValue == true {
             cell.detailTextLabel?.text = "Папка"
         } else {
-            cell.detailTextLabel?.text = "Файл"
+            if isShowSizeImage {
+                if item.pathExtension == "jpeg" || item.pathExtension == "png" {
+                    let size = try! item.resourceValues(forKeys: [.fileSizeKey])
+                    if let size = size.fileSize {
+                        cell.detailTextLabel?.text = "\(size) bytes"
+                    }
+                } else {
+                    cell.detailTextLabel?.text = "Файл"
+                }
+            } else {
+                cell.detailTextLabel?.text = "Файл"
+            }
         }
 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = files[indexPath.row]
+        let item = model.files[indexPath.row]
         
         var isFolder: ObjCBool = false
         FileManager.default.fileExists(atPath: item.path, isDirectory: &isFolder)
         if isFolder.boolValue == true {
             if let tableVC = storyboard?.instantiateViewController(withIdentifier: "FileManagerTableViewController") as? FileManagerTableViewController {
-                tableVC.url = item
+                tableVC.model.url = item
+                tableVC.isLogin = false
                 navigationController?.pushViewController(tableVC, animated: true)
             }
         } else {
@@ -131,7 +152,7 @@ final class FileManagerTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let item = files[indexPath.row]
+            let item = model.files[indexPath.row]
             do {
                 try FileManager.default.removeItem(at: item)
             } catch {
@@ -148,7 +169,7 @@ extension FileManagerTableViewController: UIImagePickerControllerDelegate, UINav
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         imageNumber += 1
         guard let urlAt = info[UIImagePickerController.InfoKey.imageURL] as? URL else { return }
-        let urlTo = url.appendingPathComponent("image" + String(imageNumber) + "." + urlAt.pathExtension)
+        let urlTo = model.url.appendingPathComponent("image" + String(imageNumber) + "." + urlAt.pathExtension)
         do {
             _ = try FileManager.default.replaceItemAt(urlTo, withItemAt: urlAt)
             self.tableView.reloadData()
@@ -157,4 +178,31 @@ extension FileManagerTableViewController: UIImagePickerControllerDelegate, UINav
         }
         dismiss(animated: true)
     }
+}
+
+extension FileManagerTableViewController: SettingsTableViewControllerProtocol {
+    
+    func sort() {
+        UserDefaults.standard.set(true, forKey: "isSorted")
+        model = Model()
+        tableView.reloadData()
+    }
+    
+    func unsort() {
+        UserDefaults.standard.set(false, forKey: "isSorted")
+        model = Model()
+        tableView.reloadData()
+    }
+    
+    func showSizeOfImage() {
+        UserDefaults.standard.set(true, forKey: "isShowSizeImage")
+        tableView.reloadData()
+    }
+    
+    func unShowSizeOfImage() {
+        UserDefaults.standard.set(false, forKey: "isShowSizeImage")
+        tableView.reloadData()
+    }
+    
+    
 }
