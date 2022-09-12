@@ -38,7 +38,7 @@ class Model {
             UserDefaults.standard.bool(forKey: "isSorted")
         }
         set {
-            UserDefaults.standard.set(true, forKey: "isSorted")
+            UserDefaults.standard.set(newValue, forKey: "isSorted")
             UserDefaults.standard.synchronize()
         }
     }
