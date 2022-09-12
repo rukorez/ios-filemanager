@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7754D23228CA19CE0097C323 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754D23128CA19CE0097C323 /* Model.swift */; };
+		7754D23728CA66120097C323 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754D23628CA66120097C323 /* SettingsTableViewController.swift */; };
+		777738F928CD287500E9EFA3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777738F828CD287500E9EFA3 /* NavigationController.swift */; };
+		77BBC94D28C8FBDA005ABEA4 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BBC94C28C8FBDA005ABEA4 /* KeychainService.swift */; };
+		77BBC95128C90C47005ABEA4 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BBC95028C90C47005ABEA4 /* PasswordViewController.swift */; };
+		77BBC95528CA1161005ABEA4 /* StorageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BBC95428CA1161005ABEA4 /* StorageTableViewController.swift */; };
 		77C030B228C6453A00C11EF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C030B128C6453A00C11EF2 /* AppDelegate.swift */; };
 		77C030B428C6453A00C11EF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C030B328C6453A00C11EF2 /* SceneDelegate.swift */; };
 		77C030B928C6453A00C11EF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77C030B728C6453A00C11EF2 /* Main.storyboard */; };
@@ -16,6 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7754D23128CA19CE0097C323 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		7754D23328CA1ACF0097C323 /* MyCustomFileManger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyCustomFileManger.entitlements; sourceTree = "<group>"; };
+		7754D23628CA66120097C323 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		777738F828CD287500E9EFA3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		77BBC94C28C8FBDA005ABEA4 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		77BBC95028C90C47005ABEA4 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PasswordViewController.swift; path = Assets.xcassets/PasswordViewController.swift; sourceTree = "<group>"; };
+		77BBC95428CA1161005ABEA4 /* StorageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTableViewController.swift; sourceTree = "<group>"; };
 		77C030AE28C6453A00C11EF2 /* MyCustomFileManger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCustomFileManger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C030B128C6453A00C11EF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		77C030B328C6453A00C11EF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,9 +69,16 @@
 		77C030B028C6453A00C11EF2 /* MyCustomFileManger */ = {
 			isa = PBXGroup;
 			children = (
+				7754D23328CA1ACF0097C323 /* MyCustomFileManger.entitlements */,
 				77C030B128C6453A00C11EF2 /* AppDelegate.swift */,
 				77C030B328C6453A00C11EF2 /* SceneDelegate.swift */,
+				7754D23128CA19CE0097C323 /* Model.swift */,
+				77BBC94C28C8FBDA005ABEA4 /* KeychainService.swift */,
+				777738F828CD287500E9EFA3 /* NavigationController.swift */,
+				77BBC95028C90C47005ABEA4 /* PasswordViewController.swift */,
 				77C030C528C6458500C11EF2 /* FileManagerTableViewController.swift */,
+				77BBC95428CA1161005ABEA4 /* StorageTableViewController.swift */,
+				7754D23628CA66120097C323 /* SettingsTableViewController.swift */,
 				77C030B728C6453A00C11EF2 /* Main.storyboard */,
 				77C030BA28C6453C00C11EF2 /* Assets.xcassets */,
 				77C030BC28C6453C00C11EF2 /* LaunchScreen.storyboard */,
@@ -139,8 +159,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				77C030B228C6453A00C11EF2 /* AppDelegate.swift in Sources */,
+				77BBC94D28C8FBDA005ABEA4 /* KeychainService.swift in Sources */,
 				77C030C628C6458500C11EF2 /* FileManagerTableViewController.swift in Sources */,
 				77C030B428C6453A00C11EF2 /* SceneDelegate.swift in Sources */,
+				777738F928CD287500E9EFA3 /* NavigationController.swift in Sources */,
+				77BBC95528CA1161005ABEA4 /* StorageTableViewController.swift in Sources */,
+				77BBC95128C90C47005ABEA4 /* PasswordViewController.swift in Sources */,
+				7754D23228CA19CE0097C323 /* Model.swift in Sources */,
+				7754D23728CA66120097C323 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,8 +311,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyCustomFileManger/MyCustomFileManger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D2W2A64UR5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyCustomFileManger/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -312,8 +340,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyCustomFileManger/MyCustomFileManger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D2W2A64UR5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyCustomFileManger/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
