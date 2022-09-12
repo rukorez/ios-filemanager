@@ -16,7 +16,7 @@ final class FileManagerTableViewController: UITableViewController {
             UserDefaults.standard.bool(forKey: "isShowSizeImage")
         }
         set {
-            UserDefaults.standard.set(true, forKey: "isShowSizeImage")
+            UserDefaults.standard.set(newValue, forKey: "isShowSizeImage")
             UserDefaults.standard.synchronize()
         }
     }
@@ -33,6 +33,8 @@ final class FileManagerTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        UserDefaults.standard.set(true, forKey: "isSorted")
+        UserDefaults.standard.synchronize()
         showPasswordVC()
         if let tab = tabBarController?.viewControllers?[1] {
             (tab as? SettingsTableViewController)?.delegate = self
@@ -184,23 +186,25 @@ extension FileManagerTableViewController: SettingsTableViewControllerProtocol {
     
     func sort() {
         UserDefaults.standard.set(true, forKey: "isSorted")
-        model = Model()
+        UserDefaults.standard.synchronize()
         tableView.reloadData()
     }
     
     func unsort() {
         UserDefaults.standard.set(false, forKey: "isSorted")
-        model = Model()
+        UserDefaults.standard.synchronize()
         tableView.reloadData()
     }
     
     func showSizeOfImage() {
         UserDefaults.standard.set(true, forKey: "isShowSizeImage")
+        UserDefaults.standard.synchronize()
         tableView.reloadData()
     }
     
     func unShowSizeOfImage() {
         UserDefaults.standard.set(false, forKey: "isShowSizeImage")
+        UserDefaults.standard.synchronize()
         tableView.reloadData()
     }
     
